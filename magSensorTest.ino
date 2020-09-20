@@ -14,6 +14,8 @@ int sensor1State = 0;         // variable for reading the magnetic sensor 1 stat
 int sensor2State = 0;
 int sensor3State = 0;
 
+int lastColorHit = 0;
+
 void setup() {
   // initialize the LED pin as an output:
   pinMode(redLed, OUTPUT);
@@ -31,23 +33,24 @@ void loop() {
   sensor3State = digitalRead(sensor3);
 
   if (sensor1State == LOW) {
-    digitalWrite(redLed, HIGH); 
-  } else {
-    digitalWrite(redLed, LOW); 
-  }
+    updateColor(lastColorHit, redLed);
+    lastColorHit = redLed;
+  } 
 
   if (sensor2State == LOW) {
-    digitalWrite(blueLed, HIGH); 
-  } else {
-    digitalWrite(blueLed, LOW); 
-  }
+    updateColor(lastColorHit, blueLed);
+    lastColorHit = blueLed;
+  } 
 
   if (sensor3State == LOW) {
-    digitalWrite(greenLed, HIGH); 
-  } else {
-    digitalWrite(greenLed, LOW); 
-  }
+    updateColor(lastColorHit, greenLed);
+    lastColorHit = greenLed;
+  } 
 
-  
-  
+  delay(3000);
+}
+
+void updateColor(int lastColor, int newColor){
+  digitalWrite(lastColor, LOW);
+  digitalWrite(newColor, HIGH);
 }
