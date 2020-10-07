@@ -13,6 +13,8 @@ const int waterPump = 8;
 
 int lastColorHit = 0;
 
+
+
 void setup() {
   pinMode(sensor1, INPUT_PULLUP);
   pinMode(sensor2, INPUT_PULLUP);
@@ -27,8 +29,9 @@ void setup() {
 }
 
 void loop() {
-   
-  checkSensorStatus();
+
+  pumpWater();
+  //checkSensorStatus();
   delay(3000);
 
 }
@@ -57,4 +60,10 @@ void checkSensorStatus() {
 void updateColor(int lastColor, int newColor){
   digitalWrite(lastColor, LOW);
   digitalWrite(newColor, HIGH);
+}
+
+void pumpWater() {
+  digitalWrite(waterPump, HIGH);
+  delay(10000);
+  digitalWrite(waterPump, LOW);
 }
