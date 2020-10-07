@@ -14,6 +14,12 @@ const int waterPump = 8;
 int lastColorHit = 0;
 
 
+int wateringTime = 5000; // In milliseconds 
+int period = 20000 - wateringTime; // In milliseconds
+int sensorCheckTime = 5000; // In milliseconds 
+int sensorCheckForWatering = period/sensorCheckTime; // 
+int waterCheckCount = 0;
+
 
 void setup() {
   pinMode(sensor1, INPUT_PULLUP);
@@ -30,10 +36,20 @@ void setup() {
 
 void loop() {
 
-  pumpWater();
-  //checkSensorStatus();
-  delay(3000);
+  actionCycle();
+  delay(sensorCheckTime);
 
+}
+
+void actionCycle() {
+  waterCheckCount++;
+  
+  if (waterCheckCount == sensorCheckForWatering){
+    pumpWater();
+    waterCheckCount = 0;
+  }
+  
+  checkSensorStatus();
 }
 
 void checkSensorStatus() {
@@ -64,6 +80,6 @@ void updateColor(int lastColor, int newColor){
 
 void pumpWater() {
   digitalWrite(waterPump, HIGH);
-  delay(10000);
+  delay(wateringTime);
   digitalWrite(waterPump, LOW);
 }
