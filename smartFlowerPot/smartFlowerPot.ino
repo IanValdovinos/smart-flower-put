@@ -9,7 +9,10 @@ const int LEDRed = 14;
 const int LEDGreen = 16;
 const int LEDBlue = 10;
 
-const int waterPump = 8; 
+const int buttonDown = 5;
+const int buttonUp = 6;
+
+const int waterPump = 15; 
 
 int lastColorHit = 0;
 
@@ -25,6 +28,9 @@ void setup() {
   pinMode(sensor1, INPUT_PULLUP);
   pinMode(sensor2, INPUT_PULLUP);
   pinMode(sensor3, INPUT_PULLUP);
+
+  pinMode(buttonDown, INPUT_PULLUP);
+  pinMode(buttonUp, INPUT_PULLUP);
 
   pinMode(LEDRed, OUTPUT);
   pinMode(LEDBlue, OUTPUT);
