@@ -7,17 +7,17 @@ int sensor3State = 0;
 
 const int buttonDown = 5;
 const int buttonUp = 6;
+int buttonDownState = 0;
+int buttonUpState = 0;
 
 const int latchPin = 7;
 const int dataPin = 8;
 const int clockPin = 9;
-//shiftOut(dataPin, clockPin, MSBFIRST, 64)
+//shiftOut(dataPin, clockPin, MSBFIRST, 64);
 
 const int LEDRed = 14;
 const int LEDGreen = 16;
 const int LEDBlue = 10;
-
-
 
 const int waterPump = 15; 
 
@@ -53,8 +53,24 @@ void setup() {
 
 void loop() {
 
-  actionCycle();
-  delay(sensorCheckTime);
+  if(digitalRead(buttonDown) == HIGH){
+    delay(100);
+    if(digitalRead(buttonDown) == LOW){
+      // Logic when the "down" button is pressed
+
+      
+    }
+  } else if(digitalRead(buttonUp) == HIGH){
+    delay(100);
+    if(digitalRead(buttonUp) == LOW){
+      // Logic when the "up" button is pressed
+
+      
+    }
+  } 
+
+//  actionCycle();
+//  delay(sensorCheckTime);
 
 }
 
