@@ -5,12 +5,19 @@ int sensor1State = 0;
 int sensor2State = 0;
 int sensor3State = 0;
 
+const int buttonDown = 5;
+const int buttonUp = 6;
+
+const int latchPin = 7;
+const int dataPin = 8;
+const int clockPin = 9;
+//shiftOut(dataPin, clockPin, MSBFIRST, 64)
+
 const int LEDRed = 14;
 const int LEDGreen = 16;
 const int LEDBlue = 10;
 
-const int buttonDown = 5;
-const int buttonUp = 6;
+
 
 const int waterPump = 15; 
 
@@ -31,6 +38,10 @@ void setup() {
 
   pinMode(buttonDown, INPUT_PULLUP);
   pinMode(buttonUp, INPUT_PULLUP);
+
+  pinMode(latchPin, OUTPUT);
+  pinMode(dataPin, OUTPUT);
+  pinMode(clockPin, OUTPUT);
 
   pinMode(LEDRed, OUTPUT);
   pinMode(LEDBlue, OUTPUT);
@@ -66,14 +77,10 @@ void checkSensorStatus() {
   if (sensor1State == LOW) {
     updateColor(lastColorHit, LEDRed);
     lastColorHit = LEDRed;
-  } 
-
-  if (sensor2State == LOW) {
+  } if (sensor2State == LOW) {
     updateColor(lastColorHit, LEDBlue);
     lastColorHit = LEDBlue;
-  } 
-
-  if (sensor3State == LOW) {
+  } else if (sensor3State == LOW) {
     updateColor(lastColorHit, LEDGreen);
     lastColorHit = LEDGreen;
   }
