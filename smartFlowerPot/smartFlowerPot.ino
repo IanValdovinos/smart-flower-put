@@ -53,21 +53,26 @@ void setup() {
 
 void loop() {
 
-  if(digitalRead(buttonDown) == HIGH){
-    delay(100);
-    if(digitalRead(buttonDown) == LOW){
-      // Logic when the "down" button is pressed
+  digitalWrite(latchPin, LOW);
+  shiftOut(dataPin, clockPin, MSBFIRST, 102);
+  digitalWrite(latchPin, HIGH);
+  delay(1000);
 
-      
-    }
-  } else if(digitalRead(buttonUp) == HIGH){
-    delay(100);
-    if(digitalRead(buttonUp) == LOW){
-      // Logic when the "up" button is pressed
-
-      
-    }
-  } 
+//  if(digitalRead(buttonDown) == HIGH){
+//    delay(100);
+//    if(digitalRead(buttonDown) == LOW){
+//      // Logic when the "down" button is pressed
+//      
+//      
+//    }
+//  } else if(digitalRead(buttonUp) == HIGH){
+//    delay(100);
+//    if(digitalRead(buttonUp) == LOW){
+//      // Logic when the "up" button is pressed
+//      
+//      
+//    }
+//  } 
 
 //  actionCycle();
 //  delay(sensorCheckTime);
