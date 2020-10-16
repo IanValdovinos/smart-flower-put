@@ -15,6 +15,9 @@ const int dataPin = 8;
 const int clockPin = 9;
 //shiftOut(dataPin, clockPin, MSBFIRST, 64);
 
+const int numberDisplayList[10] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 103}; // Common cathode display. From 0 to 9
+int dayCount = 1;
+
 const int LEDRed = 14;
 const int LEDGreen = 16;
 const int LEDBlue = 10;
@@ -49,34 +52,40 @@ void setup() {
 
   pinMode(waterPump, OUTPUT);
   
+  updateDisplay(numberDisplayList[dayCount]);
 }
 
 void loop() {
 
-  digitalWrite(latchPin, LOW);
-  shiftOut(dataPin, clockPin, MSBFIRST, 102);
-  digitalWrite(latchPin, HIGH);
-  delay(1000);
-
-//  if(digitalRead(buttonDown) == HIGH){
-//    delay(100);
-//    if(digitalRead(buttonDown) == LOW){
-//      // Logic when the "down" button is pressed
-//      
-//      
-//    }
-//  } else if(digitalRead(buttonUp) == HIGH){
-//    delay(100);
-//    if(digitalRead(buttonUp) == LOW){
-//      // Logic when the "up" button is pressed
-//      
-//      
-//    }
-//  } 
+  if(digitalRead(buttonDown) == HIGH){
+    delay(100);
+    if(digitalRead(buttonDown) == LOW){
+      // Logic when the "down" button is pressed
+      if(dayCount > 1) {
+        dayCount--;
+        updateDisplay(numberDisplayList[dayCount]);
+      }
+    }
+  } else if(digitalRead(buttonUp) == HIGH){
+    delay(100);
+    if(digitalRead(buttonUp) == LOW){
+      // Logic when the "up" button is pressed
+      if(dayCount < 9) {
+        dayCount++;
+        updateDisplay(numberDisplayList[dayCount]);
+      };
+    }
+  } 
 
 //  actionCycle();
 //  delay(sensorCheckTime);
 
+}
+
+void updateDisplay(int number) {
+  digitalWrite(latchPin, LOW);
+  shiftOut(dataPin, clockPin, MSBFIRST, number);
+  digitalWrite(latchPin, HIGH);
 }
 
 void actionCycle() {
