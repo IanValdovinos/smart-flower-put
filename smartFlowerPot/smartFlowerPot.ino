@@ -1,3 +1,5 @@
+#include <Metro.h>
+
 const int sensor1 = 2;
 const int sensor2 = 3;
 const int sensor3 = 4;
