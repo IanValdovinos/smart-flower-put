@@ -10,6 +10,7 @@ const int buttonUp = 6;
 int buttonDownState = 0;
 int buttonUpState = 0;
 
+// Pins used to control the display by SN74HC595N
 const int latchPin = 7;
 const int dataPin = 8;
 const int clockPin = 9;
@@ -22,15 +23,14 @@ const int LEDRed = 14;
 const int LEDGreen = 16;
 const int LEDBlue = 10;
 
-const int waterPump = 15; 
-
 int lastColorHit = 0;
 
+const int waterPump = 15; 
 
-int wateringTime = 5000; // In milliseconds 
-int period = 20000 - wateringTime; // In milliseconds
-int sensorCheckTime = 5000; // In milliseconds 
-int sensorCheckForWatering = period/sensorCheckTime; // 
+int wateringTime = 5000; // How long the plant will be watered. In milliseconds 
+int period = 20000 - wateringTime; // How long it will take until the plant is watered again. In milliseconds
+int sensorCheckTime = 5000; // How often the water level sensors are checked. In milliseconds 
+int sensorCheckForWatering = period/sensorCheckTime; 
 int waterCheckCount = 0;
 
 
@@ -57,6 +57,15 @@ void setup() {
 
 void loop() {
 
+  // checkButtons();
+
+   actionCycle();
+   delay(sensorCheckTime);
+
+}
+
+// Function to check the buttons and perform a task
+void checkButtons(){
   if(digitalRead(buttonDown) == HIGH){
     delay(100);
     if(digitalRead(buttonDown) == LOW){
@@ -75,11 +84,7 @@ void loop() {
         updateDisplay(numberDisplayList[dayCount]);
       };
     }
-  } 
-
-//  actionCycle();
-//  delay(sensorCheckTime);
-
+  }
 }
 
 void updateDisplay(int number) {
