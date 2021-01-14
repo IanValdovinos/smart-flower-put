@@ -35,6 +35,10 @@ int sensorCheckTime = 5000; // How often the water level sensors are checked. In
 int sensorCheckForWatering = period/sensorCheckTime; 
 int waterCheckCount = 0;
 
+// Variable setup for Metro library. Metro is used for running code at the same time
+Metro checkButtonsMetro = Metro(50);
+Metro sensorCheckMetro = Metro(sensorCheckTime);
+
 
 void setup() {
   pinMode(sensor1, INPUT_PULLUP);
