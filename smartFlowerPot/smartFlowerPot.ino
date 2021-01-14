@@ -30,7 +30,8 @@ int lastColorHit = 0;
 const int waterPump = 15; 
 
 int wateringTime = 5000; // How long the plant will be watered. In milliseconds 
-int period = 20000 - wateringTime; // How long it will take until the plant is watered again. In milliseconds
+int waitTime = 10000; // How long it will take until the plant is watered again. In milliseconds
+int period = waitTime + wateringTime; 
 int sensorCheckTime = 5000; // How often the water level sensors are checked. In milliseconds 
 int sensorCheckForWatering = period/sensorCheckTime; 
 int waterCheckCount = 0;
