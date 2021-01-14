@@ -65,8 +65,16 @@ void loop() {
 
   // checkButtons();
 
-   actionCycle();
-   delay(sensorCheckTime);
+  // actionCycle();
+  // delay(sensorCheckTime);
+
+  if(checkButtonsMetro.check()){
+    checkButtons();
+  }
+
+  if(sensorCheckMetro.check()){
+    actionCycle();
+  }
 
 }
 
