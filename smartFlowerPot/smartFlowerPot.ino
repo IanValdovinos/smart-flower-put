@@ -30,16 +30,13 @@ int lastColorHit = 0;
 const int waterPump = 15; 
 
 int wateringTime = 5000; // How long the plant will be watered. In milliseconds 
-int waitTime = 10000; // How long it will take until the plant is watered again. In milliseconds
-int period = waitTime + wateringTime; 
-int sensorCheckTime = 5000; // How often the water level sensors are checked. In milliseconds 
-int sensorCheckForWatering = period/sensorCheckTime; 
-int waterCheckCount = 0;
+int waitTime = 10000 + wateringTime; // How long it will take until the plant is watered again. In milliseconds
+int sensorCheckTime = 1000; // How often the water level sensors are checked. In milliseconds 
 
 // Variable setup for Metro library. Metro is used for running code at the same time
 Metro checkButtonsMetro = Metro(50);
 Metro sensorCheckMetro = Metro(sensorCheckTime);
-
+Metro pumpWaterMetro = Metro(waitTime);
 
 void setup() {
   pinMode(sensor1, INPUT_PULLUP);
@@ -64,17 +61,15 @@ void setup() {
 
 void loop() {
 
-  // checkButtons();
-
-  // actionCycle();
-  // delay(sensorCheckTime);
-
-  if(checkButtonsMetro.check()){
-    checkButtons();
-  }
+  
+  checkButtons();
 
   if(sensorCheckMetro.check()){
-    actionCycle();
+    checkSensorStatus();
+  }
+
+  if(pumpWaterMetro.check()){
+    pumpWater();
   }
 
 }
@@ -82,7 +77,7 @@ void loop() {
 // Function to check the buttons and perform a task
 void checkButtons(){
   if(digitalRead(buttonDown) == HIGH){
-    delay(100);
+    delay(50);
     if(digitalRead(buttonDown) == LOW){
       // Logic when the "down" button is pressed
       if(dayCount > 1) {
@@ -97,7 +92,7 @@ void checkButtons(){
       if(dayCount < 9) {
         dayCount++;
         updateDisplay(numberDisplayList[dayCount]);
-      };
+      }
     }
   }
 }
@@ -106,17 +101,6 @@ void updateDisplay(int number) {
   digitalWrite(latchPin, LOW);
   shiftOut(dataPin, clockPin, MSBFIRST, number);
   digitalWrite(latchPin, HIGH);
-}
-
-void actionCycle() {
-  waterCheckCount++;
-  
-  if (waterCheckCount == sensorCheckForWatering){
-    pumpWater();
-    waterCheckCount = 0;
-  }
-  
-  checkSensorStatus();
 }
 
 void checkSensorStatus() {
