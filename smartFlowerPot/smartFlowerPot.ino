@@ -29,8 +29,8 @@ int lastColorHit = 0;
 
 const int waterPump = 15; 
 
-int wateringTime = 5000; // How long the plant will be watered. In milliseconds 
-int waitTime = 10000 + wateringTime; // How long it will take until the plant is watered again. In milliseconds
+int wateringTime = 1000; // How long the plant will be watered. In milliseconds 
+int waitTime = 1000 + wateringTime; // How long it will take until the plant is watered again. In milliseconds
 int sensorCheckTime = 1000; // How often the water level sensors are checked. In milliseconds 
 
 // Variable setup for Metro library. Metro is used for running code at the same time
@@ -82,6 +82,8 @@ void checkButtons(){
       // Logic when the "down" button is pressed
       if(dayCount > 1) {
         dayCount--;
+        pumpWaterMetro.interval(1000*dayCount + wateringTime);
+        pumpWaterMetro.reset();
         updateDisplay(numberDisplayList[dayCount]);
       }
     }
@@ -91,6 +93,8 @@ void checkButtons(){
       // Logic when the "up" button is pressed
       if(dayCount < 9) {
         dayCount++;
+        pumpWaterMetro.interval(1000*dayCount + wateringTime);
+        pumpWaterMetro.reset();
         updateDisplay(numberDisplayList[dayCount]);
       }
     }
