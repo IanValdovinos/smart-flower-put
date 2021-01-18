@@ -30,6 +30,7 @@ const int LEDBlue = 10;
 
 // Buzzer to indicate a low water level
 #define buzzer A0
+boolean buzzerState = false;
 
 int lastColorHit = 0;
 
@@ -43,6 +44,9 @@ int sensorCheckTime = 1000; // How often the water level sensors are checked. In
 Metro checkButtonsMetro = Metro(50);
 Metro sensorCheckMetro = Metro(sensorCheckTime);
 Metro pumpWaterMetro = Metro(waitTime);
+
+Metro tone_wait = Metro(10000); //How often the buzzer will sound
+Metro tone_mini_wait = Metro(1000); // For how long the buzzer will sound
 
 void setup() {
   pinMode(sensor1, INPUT_PULLUP);
@@ -72,12 +76,16 @@ void loop() {
   
   checkButtons();
 
-  if(sensorCheckMetro.check()){
+  if (sensorCheckMetro.check()){
     checkSensorStatus();
   }
 
-  if(pumpWaterMetro.check()){
+  if (pumpWaterMetro.check()){
     pumpWater();
+  }
+
+  if (tone_mini_wait.check()) {
+    playBuzzer();
   }
 
 }
@@ -135,6 +143,11 @@ void checkSensorStatus() {
 void updateColor(int lastColor, int newColor){
   digitalWrite(lastColor, LOW);
   digitalWrite(newColor, HIGH);
+}
+
+void playBuzzer(){
+  buzzerState = !buzzerState;
+  digitalWrite(buzzer, buzzerState);
 }
 
 void pumpWater() {
