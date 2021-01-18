@@ -1,5 +1,6 @@
 #include <Metro.h>
 
+// Water level sensors
 const int sensor1 = 2;
 const int sensor2 = 3;
 const int sensor3 = 4;
@@ -7,12 +8,13 @@ int sensor1State = 0;
 int sensor2State = 0;
 int sensor3State = 0;
 
+// Buttons to set how often to water
 const int buttonDown = 5;
 const int buttonUp = 6;
 int buttonDownState = 0;
 int buttonUpState = 0;
 
-// Pins used to control the display by SN74HC595N
+// Pins used to control the display with the SN74HC595N
 const int latchPin = 7;
 const int dataPin = 8;
 const int clockPin = 9;
@@ -21,9 +23,13 @@ const int clockPin = 9;
 const int numberDisplayList[10] = {63, 6, 91, 79, 102, 109, 125, 7, 127, 103}; // Common cathode display. From 0 to 9
 int dayCount = 1;
 
+// LED pins to indicate water level to the user
 const int LEDRed = 14;
 const int LEDGreen = 16;
 const int LEDBlue = 10;
+
+// Buzzer to indicate a low water level
+#define buzzer A0
 
 int lastColorHit = 0;
 
@@ -53,6 +59,8 @@ void setup() {
   pinMode(LEDRed, OUTPUT);
   pinMode(LEDBlue, OUTPUT);
   pinMode(LEDGreen, OUTPUT);
+
+  pinMode(buzzer, OUTPUT);
 
   pinMode(waterPump, OUTPUT);
   
