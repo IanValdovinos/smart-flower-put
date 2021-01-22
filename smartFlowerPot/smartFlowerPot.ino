@@ -7,6 +7,7 @@ const int sensor3 = 4;
 int sensor1State = 0;         
 int sensor2State = 0;
 int sensor3State = 0;
+boolean has_water = true;
 
 // Buttons to set how often to water
 const int buttonDown = 5;
@@ -44,9 +45,7 @@ int sensorCheckTime = 1000; // How often the water level sensors are checked. In
 Metro checkButtonsMetro = Metro(50);
 Metro sensorCheckMetro = Metro(sensorCheckTime);
 Metro pumpWaterMetro = Metro(waitTime);
-
-Metro tone_wait = Metro(10000); //How often the buzzer will sound
-Metro tone_mini_wait = Metro(1000); // For how long the buzzer will sound
+Metro buzzerMetro = Metro(10000);
 
 void setup() {
   pinMode(sensor1, INPUT_PULLUP);
@@ -75,19 +74,30 @@ void loop() {
 
   
   checkButtons();
+  
+  if (has_water) {
+    digitalWrite(buzzer, LOW);
+    
+    if (sensorCheckMetro.check()){
+      checkSensorStatus();
+    }
 
-  if (sensorCheckMetro.check()){
-    checkSensorStatus();
+    if (pumpWaterMetro.check()){
+      pumpWater();
+    }
+  } else {
+     
+    while(!has_water){
+      if (buzzerMetro.check()){
+        playBuzzer();
+      }
+      checkSensorStatus();
+    }
+    
+    checkButtonsMetro.reset();
+    sensorCheckMetro.reset();
+    pumpWaterMetro.reset();
   }
-
-  if (pumpWaterMetro.check()){
-    pumpWater();
-  }
-
-  if (tone_mini_wait.check()) {
-    playBuzzer();
-  }
-
 }
 
 // Function to check the buttons and perform a task
@@ -131,12 +141,15 @@ void checkSensorStatus() {
   if (sensor1State == LOW) {
     updateColor(lastColorHit, LEDRed);
     lastColorHit = LEDRed;
+    has_water = false;
   } if (sensor2State == LOW) {
     updateColor(lastColorHit, LEDBlue);
     lastColorHit = LEDBlue;
+    has_water = true;
   } else if (sensor3State == LOW) {
     updateColor(lastColorHit, LEDGreen);
     lastColorHit = LEDGreen;
+    has_water = true;
   }
 }
 
@@ -146,8 +159,9 @@ void updateColor(int lastColor, int newColor){
 }
 
 void playBuzzer(){
-  buzzerState = !buzzerState;
-  digitalWrite(buzzer, buzzerState);
+  digitalWrite(buzzer, HIGH);
+  delay(250);
+  digitalWrite(buzzer, LOW);
 }
 
 void pumpWater() {
