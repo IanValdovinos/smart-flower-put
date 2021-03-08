@@ -1,4 +1,4 @@
-int myPump = 8;
+int myPump = 7;
 
 void setup() {
   // put your setup code here, to run once:
